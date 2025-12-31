@@ -5,91 +5,130 @@ const tacheElement = document.getElementById("tacheElement");
 input.value = "";
 let todos = [];
 
-//fonction qui sauvegarde la todo
+// ========================================
+// 2. ARRAY GLOBAL
+// ========================================
+
+// ========================================
+// 3. FONCTION SAUVEGARDER (localStorage)
+// ========================================
 function saveTodos() {
+  // Convertir todos en string
+
   const todoString = JSON.stringify(todos);
-  localStorage.setItem("todos", todoString);
+
+  // Sauvegarder dans localStorage
+  localStorage.setItem("Todos", todoString);
 }
 
-// fonctionqui cahrge la todo
-
+// ========================================
+// 4. FONCTION CHARGER (localStorage)
+// ========================================
 function chargeTodos() {
-  const todoString = localStorage.getItem("todos");
+  // Récupérer depuis localStorage
+  const todoString = localStorage.getItem("Todos");
+  // Si null, return
   if (todoString === null) {
     return;
-  }
+  } // Convertir en array
   todos = JSON.parse(todoString);
-  todos.forEach(function (tacheTexte) {
-    const tacheArray = document.createElement("li");
-    tacheArray.textContent = tacheTexte;
-    list.appendChild(tacheArray);
+
+  // forEach pour afficher chaque tâche
+  todos.forEach(function (TacheElement, index) {
+    const newTache = document.createElement("li");
+    newTache.textContent = TacheElement;
+    list.appendChild(newTache);
+
     const check = document.createElement("i");
     check.classList.add("fa-solid", "fa-check");
-    tacheArray.appendChild(check);
-    const rubish = document.createElement("i");
-    rubish.classList.add("fa-solid", "fa-trash-can");
-    console.log(rubish);
-    tacheArray.appendChild(rubish);
-    rubish.addEventListener("click", () => {
-      tacheArray.remove();
-    });
+    newTache.appendChild(check);
 
     check.addEventListener("click", () => {
       check.classList.toggle("activ");
+
       if (check.classList.contains("activ")) {
-        tacheArray.style = "text-decoration: line-through;";
-      } else if (!check.classList.contains("activ")) {
-        tacheArray.style = "text-decoration: none;";
+        newTache.style = "text-decoration-line: line-through;";
+      } else if (check.classList.contains("activ")) {
+        newTache.style = "text-decoration-line: none;";
       }
+      const rubish = document.createElement("i");
+      rubish.classList.add("fa-solid", "fa-trash-can");
+      newTache.appendChild(rubish);
+
+      rubish.addEventListener("click", () => {
+        newTache.remove();
+        todos.splice(index, 1);
+        saveTodos();
+      });
     });
-    input.value = "";
   });
 }
 
+// ========================================
+// 5. FONCTION AJOUTER TÂCHE
+// ========================================
 function addtodo() {
+  // TON CODE V1.1 ICI
+  // (vérification, créer li, icons, event listeners)
+
   if (input.value === "") {
-    alert("Veuillez rentrer une tache");
+    alert("Veuillez rentrez une tâche");
   } else {
-    const tache = document.createElement("li");
-    // recupérer la tache de l'input
-    tache.textContent = input.value;
+    // Je cree un element li
+    const newTache = document.createElement("li");
+    // Je lui dit ce que li contient
 
-    //Verifier qu'elle n'est pas vide
+    newTache.textContent = input.value;
+    console.log("Todos:", todos);
 
-    list.appendChild(tache);
-    // ajouter un element poubelle
+    list.appendChild(newTache);
+    todos.push(input.value);
+    console.log("Todos après ajout:", todos);
     const check = document.createElement("i");
     check.classList.add("fa-solid", "fa-check");
-    tache.appendChild(check);
+    newTache.appendChild(check);
     const rubish = document.createElement("i");
     rubish.classList.add("fa-solid", "fa-trash-can");
-    console.log(rubish);
-    tache.appendChild(rubish);
-    //l'ajouter à la liste des taches
-
-    rubish.addEventListener("click", () => {
-      tache.remove();
-    });
-
+    newTache.appendChild(rubish);
+    const taskText = input.value;
+    const index = todos.indexOf(taskText);
     check.addEventListener("click", () => {
       check.classList.toggle("activ");
       if (check.classList.contains("activ")) {
-        tache.style = "text-decoration: line-through;";
+        newTache.style = "text-decoration-line: line-through;";
       } else if (!check.classList.contains("activ")) {
-        tache.style = "text-decoration: none;";
+        newTache.style = "text-decoration-line: none;";
       }
     });
-    input.value = "";
+
+    rubish.addEventListener("click", () => {
+      newTache.remove();
+      taches.splice(index, 1);
+      saveTodos();
+    });
   }
+
+  input.value = "";
 }
 
-// ajouter un element et barrer l'element
+// ========================================
+// 6. EVENT LISTENERS
+// ========================================
+// Bouton Ajouter
 button.addEventListener("click", addtodo);
+
+// Touche Entrée
 input.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
     addtodo();
   }
 });
+
+// ========================================
+// 7. CHARGER AU DÉMARRAGE
+// ========================================
+chargeTodos();
+
 // 4 méthode essentielles LOCAL STORAGE
 
 //A. Sauvegarder les données
@@ -115,17 +154,17 @@ input.addEventListener("keypress", (e) => {
 
 //Exemple bonne methode
 
-const sports = ["Running", "JJB", "Natation"];
+//const sports = ["Running", "JJB", "Natation"];
 //Convertir en string
-const SportsStrings = JSON.stringify(sports);
+//const SportsStrings = JSON.stringify(sports);
 //Sauvegarder
-localStorage.setItem("sports", SportsStrings);
+//localStorage.setItem("sports", SportsStrings);
 
 // Récuperer puis convertir string en array
 
-const sportsSaved = localStorage.getItem("sports");
-const sportsArray = JSON.parse(sportsSaved);
+//const sportsSaved = localStorage.getItem("sports");
+//const sportsArray = JSON.parse(sportsSaved);
 
-console.log(sportsArray);
-console.log(typeof sportsArray);
-console.log(Array.isArray(sportsArray));
+//console.log(sportsArray);
+//console.log(typeof sportsArray);
+//console.log(Array.isArray(sportsArray));
