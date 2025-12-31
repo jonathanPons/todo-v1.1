@@ -42,6 +42,9 @@ function chargeTodos() {
     const check = document.createElement("i");
     check.classList.add("fa-solid", "fa-check");
     newTache.appendChild(check);
+    const rubish = document.createElement("i");
+    rubish.classList.add("fa-solid", "fa-trash-can");
+    newTache.appendChild(rubish);
 
     check.addEventListener("click", () => {
       check.classList.toggle("activ");
@@ -51,15 +54,11 @@ function chargeTodos() {
       } else if (check.classList.contains("activ")) {
         newTache.style = "text-decoration-line: none;";
       }
-      const rubish = document.createElement("i");
-      rubish.classList.add("fa-solid", "fa-trash-can");
-      newTache.appendChild(rubish);
-
-      rubish.addEventListener("click", () => {
-        newTache.remove();
-        todos.splice(index, 1);
-        saveTodos();
-      });
+    });
+    rubish.addEventListener("click", () => {
+      newTache.remove();
+      tacheElement.splice(index, 0);
+      saveTodos();
     });
   });
 }
@@ -79,7 +78,7 @@ function addtodo() {
     // Je lui dit ce que li contient
 
     newTache.textContent = input.value;
-    console.log("Todos:", todos);
+    console.log("Todos:", newTache);
 
     list.appendChild(newTache);
     todos.push(input.value);
@@ -92,6 +91,7 @@ function addtodo() {
     newTache.appendChild(rubish);
     const taskText = input.value;
     const index = todos.indexOf(taskText);
+    saveTodos();
     check.addEventListener("click", () => {
       check.classList.toggle("activ");
       if (check.classList.contains("activ")) {
