@@ -12,122 +12,92 @@ let todos = [];
 // ========================================
 // 3. FONCTION SAUVEGARDER (localStorage)
 // ========================================
+
 function saveTodos() {
-  // Convertir todos en string
-
-  const todoString = JSON.stringify(todos);
-
-  // Sauvegarder dans localStorage
-  localStorage.setItem("Todos", todoString);
+  const stringTodo = JSON.stringify(todos);
+  localStorage.setItem("todos", stringTodo);
 }
 
 // ========================================
 // 4. FONCTION CHARGER (localStorage)
 // ========================================
-function chargeTodos() {
-  // Récupérer depuis localStorage
-  const todoString = localStorage.getItem("Todos");
-  // Si null, return
-  if (todoString === null) {
+function chargeTodo() {
+  //Entree : pas d'entree, sert à charger les paramettre sauvegargardé
+  const stringTodo = localStorage.getItem("todos");
+
+  //Sortie : renvoi null si rien de chargé
+
+  if (stringTodo === null) {
     return;
-  } // Convertir en array
-  todos = JSON.parse(todoString);
-
-  // forEach pour afficher chaque tâche
-  todos.forEach(function (TacheElement, index) {
-    const newTache = document.createElement("li");
-    newTache.textContent = TacheElement;
-    list.appendChild(newTache);
-
-    const check = document.createElement("i");
-    check.classList.add("fa-solid", "fa-check");
-    newTache.appendChild(check);
-    const rubish = document.createElement("i");
-    rubish.classList.add("fa-solid", "fa-trash-can");
-    newTache.appendChild(rubish);
-
-    check.addEventListener("click", () => {
-      check.classList.toggle("activ");
-
-      if (check.classList.contains("activ")) {
-        newTache.style = "text-decoration-line: line-through;";
-      } else if (check.classList.contains("activ")) {
-        newTache.style = "text-decoration-line: none;";
-      }
-    });
-    rubish.addEventListener("click", () => {
-      newTache.remove();
-      tacheElement.splice(index, 0);
-      saveTodos();
-    });
-  });
+  }
+  //Cas invalides: pas de cas invalide
+  //differement chemin
+  //return si null
+  // sinon charger le saveTodos
 }
 
 // ========================================
 // 5. FONCTION AJOUTER TÂCHE
 // ========================================
-function addtodo() {
-  // TON CODE V1.1 ICI
-  // (vérification, créer li, icons, event listeners)
-
+function addTodo() {
+  //Entree : pas de parametre
+  //Creer le input
   if (input.value === "") {
-    alert("Veuillez rentrez une tâche");
+    return alert("Veuillez rentrez une tâche");
   } else {
-    // Je cree un element li
-    const newTache = document.createElement("li");
-    // Je lui dit ce que li contient
+    const createInput = document.createElement("li");
+    createInput.textContent = input.value;
+    list.appendChild(createInput);
 
-    newTache.textContent = input.value;
-    console.log("Todos:", newTache);
-
-    list.appendChild(newTache);
-    todos.push(input.value);
-    console.log("Todos après ajout:", todos);
     const check = document.createElement("i");
     check.classList.add("fa-solid", "fa-check");
-    newTache.appendChild(check);
-    const rubish = document.createElement("i");
-    rubish.classList.add("fa-solid", "fa-trash-can");
-    newTache.appendChild(rubish);
-    const taskText = input.value;
-    const index = todos.indexOf(taskText);
+    createInput.appendChild(check);
+
+    const trash = document.createElement("i");
+    trash.classList.add("fa-solid", "fa-trash-can");
+    createInput.appendChild(trash);
+
+    todos.push(input.value);
     saveTodos();
     check.addEventListener("click", () => {
       check.classList.toggle("activ");
-      if (check.classList.contains("activ")) {
-        newTache.style = "text-decoration-line: line-through;";
-      } else if (!check.classList.contains("activ")) {
-        newTache.style = "text-decoration-line: none;";
+      if (check.classList.contains === "activ") {
+        createInput.style = "text-decoration-line: line-through;";
+      } else {
+        createInput.style = "text-decoration-line: none";
       }
     });
 
-    rubish.addEventListener("click", () => {
-      newTache.remove();
-      taches.splice(index, 1);
+    trash.addEventListener("click", () => {
+      createInput.remove();
       saveTodos();
     });
+    input.value = "";
   }
-
-  input.value = "";
 }
 
+//vider l'input
+
+//Sortie: SI le input est vide > return une alert
+// Ajoute la tache = La creer, la placer, lui associer check et trash
+
+// Cas invalides :
+
+//Input vide
+
+// Chemins differents :
+// return alert si input vide
+// la tache ajoutée
+
+// input vide
 // ========================================
 // 6. EVENT LISTENERS
 // ========================================
 // Bouton Ajouter
-button.addEventListener("click", addtodo);
-
-// Touche Entrée
-input.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    addtodo();
-  }
-});
 
 // ========================================
 // 7. CHARGER AU DÉMARRAGE
 // ========================================
-chargeTodos();
 
 // 4 méthode essentielles LOCAL STORAGE
 
